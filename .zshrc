@@ -1,28 +1,28 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
+###
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/yarvnis/.oh-my-zsh"
-zmodload zsh/zprof
+#installation via script from github
+#export ZSH="/home/$USER/.oh-my-zsh"
+#installation via paru -S oh-my-zsh-git
+export ZSH="$HOME/.oh-my-zsh"
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# if you installed the package oh-my-zsh-powerline-theme-git then you type here "powerline" as zsh theme
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
 # If set to an empty array, this variable will have no effect.
+
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# ZSH_THEME_RANDOM_IGNORED=(pygmalion tjkirch_mod)
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -70,7 +70,9 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
-
+if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
+        source /etc/profile.d/vte.sh
+fi
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
@@ -97,6 +99,7 @@ plugins=(git
     zsh-completions
     )
 
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -117,139 +120,45 @@ source $ZSH/oh-my-zsh.sh
 # export ARCHFLAGS="-arch x86_64"
 
 
-## set command prediction from history, see 'man 1 zshcontrib'
-#is4 && zrcautoload predict-on && \
-#zle -N predict-on         && \
-#zle -N predict-off        && \
-#bindkey "^X^Z" predict-on && \
-#bindkey "^Z" predict-off
+####   ARCOLINUX SETTINGS   ####
+export PAGER='most'
 
-## press ctrl-q to quote line:
-#mquote () {
-   #zle beginning-of-line
-   #zle forward-word
-     #RBUFFER="'$RBUFFER'"
-     #RBUFFER=${(q)RBUFFER}
-   #zle end-of-line
-#}
-#zle -N mquote && bindkey '^q' mquote
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-## define word separators (for stuff like backward-word, forward-word, backward-kill-word,..)
-#WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>' # the default
-#WORDCHARS=.
-#WORDCHARS='*?_[]~=&;!#$%^(){}'
-#WORDCHARS='${WORDCHARS:s@/@}'
+setopt GLOB_DOTS
+#share commands between terminal instances or not
+unsetopt SHARE_HISTORY
+#setopt SHARE_HISTORY
 
-# just type '...' to get '../..'
-#rationalise-dot() {
-#local MATCH
-#if [[ $LBUFFER =~ '(^|/| | |'$'\n''|\||;|&)\.\.$' ]]; then
-#  LBUFFER+=/
-#  zle self-insert
-#  zle self-insert
-#else
-#  zle self-insert
-#fi
-#}
-#zle -N rationalise-dot
-#bindkey . rationalise-dot
-## without this, typing a . aborts incremental history search
-#bindkey -M isearch . self-insert
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
 
-#bindkey '\eq' push-line-or-edit
+export HISTCONTROL=ignoreboth:erasedups
 
-## some popular options ##
+# Make nano the default editor
 
-## add `|' to output redirections in the history
-#setopt histallowclobber
+export EDITOR='nano'
+export VISUAL='nano'
 
-## try to avoid the 'zsh: no matches found...'
-#setopt nonomatch
+#PS1='[\u@\h \W]\$ '
 
-## warning if file exists ('cat /dev/null > ~/.zshrc')
-#setopt NO_clobber
+if [ -d "$HOME/.bin" ] ;
+  then PATH="$HOME/.bin:$PATH"
+fi
 
-## don't warn me about bg processes when exiting
-#setopt nocheckjobs
-
-## alert me if something failed
-#setopt printexitvalue
-
-## with spelling correction, assume dvorak kb
-#setopt dvorak
-
-## Allow comments even in interactive shells
-#setopt interactivecomments
-
-
-## compsys related snippets ##
-
-## changed completer settings
-#zstyle ':completion:*' completer _complete _correct _approximate
-#zstyle ':completion:*' expand prefix suffix
-
-## another different completer setting: expand shell aliases
-#zstyle ':completion:*' completer _expand_alias _complete _approximate
-
-## to have more convenient account completion, specify your logins:
-#my_accounts=(
-# {grml,grml1}@foo.invalid
-# grml-devel@bar.invalid
-#)
-#other_accounts=(
-# {fred,root}@foo.invalid
-# vera@bar.invalid
-#)
-#zstyle ':completion:*:my-accounts' users-hosts $my_accounts
-#zstyle ':completion:*:other-accounts' users-hosts $other_accounts
-
-## add grml.org to your list of hosts
-#hosts+=(grml.org)
-#zstyle ':completion:*:hosts' hosts $hosts
-
-## telnet on non-default ports? ...well:
-## specify specific port/service settings:
-#telnet_users_hosts_ports=(
-#  user1@host1:
-#  user2@host2:
-#  @mail-server:{smtp,pop3}
-#  @news-server:nntp
-#  @proxy-server:8000
-#)
-#zstyle ':completion:*:*:telnet:*' users-hosts-ports $telnet_users_hosts_ports
-
-## the default grml setup provides '..' as a completion. it does not provide
-## '.' though. If you want that too, use the following line:
-#zstyle ':completion:*' special-dirs true
-
+if [ -d "$HOME/.local/bin" ] ;
+  then PATH="$HOME/.local/bin:$PATH"
+fi
 
 ### ALIASES ###
 
-
-
-# Windscribe
-alias ca="windscribe connect ca"
-alias connect="windscribe connect"
-alias disconnect="windscribe disconnect"
-alias us-n="windscribe connect us-n"
-alias cn="windscribe connect"
-alias dc="windscribe disconnect"
-alias best="windscribe connect best"
-
-# App Shortcuts
-alias lo="libreoffice"
-alias ff="firefox-developer-edition"
-alias cm= "chromium-snashot-bin"
-alias ms="mailspring"
-alias pie="gnome-pie"
-alias sync="onedrive --synchronize"
 #list
-alias ls='ls --color=auto'
+alias ls="colorls --report"
 alias la='ls -a'
 alias ll='ls -alFh'
 alias l='ls'
 alias l.="ls -A | egrep '^\.'"
-
+alias lc='colorls'
 #fix obvious typo's
 alias cd..='cd ..'
 alias pdw='pwd'
@@ -370,6 +279,7 @@ alias vbm="sudo /usr/local/bin/arcolinux-vbox-share"
 
 #enabling vmware services
 alias start-vmware="sudo systemctl enable --now vmtoolsd.service"
+alias vmware-start="sudo systemctl enable --now vmtoolsd.service"
 alias sv="sudo systemctl enable --now vmtoolsd.service"
 
 #shopt
@@ -527,13 +437,11 @@ alias ars="arcolinux-reflector-simple"
 alias atm="arcolinux-tellme"
 alias avs="arcolinux-vbox-share"
 alias awa="arcolinux-welcome-app"
-
 #remove
 alias rmgitcache="rm -r ~/.cache/git"
 
 #moving your personal files and folders from /personal to ~
 alias personal='cp -Rf /personal/* ~'
-
 #create a file called .zshrc-personal and put all your personal aliases
 #in there. They will not be overwritten by skel.
 
@@ -554,6 +462,8 @@ neofetch
 #sysinfo-retro
 #cpufetch
 #colorscript random
+source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+source $(dirname $(gem which colorls))/tab_complete.sh
