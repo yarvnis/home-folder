@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 ###
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -140,7 +147,7 @@ export HISTCONTROL=ignoreboth:erasedups
 export EDITOR='nano'
 export VISUAL='nano'
 
-#PS1='[\u@\h \W]\$ '
+PS1='[\u@\h \W]\$ '
 
 if [ -d "$HOME/.bin" ] ;
   then PATH="$HOME/.bin:$PATH"
@@ -151,6 +158,40 @@ if [ -d "$HOME/.local/bin" ] ;
 fi
 
 ### ALIASES ###
+
+# Windscribe
+alias ca="windscribe connect ca"
+alias connect="windscribe connect"
+alias disconnect="windscribe disconnect"
+alias us-n="windscribe connect us-n"
+alias cn="windscribe connect"
+alias dc="windscribe disconnect"
+alias best="windscribe connect best"
+
+# App Shortcuts
+alias lo="libreoffice"
+alias ff="firefox-developer-edition"
+alias cm= "chromium-snashot-bin"
+alias ms="mailspring"
+alias pie="gnome-pie"
+alias sync="onedrive --synchronize"
+#list
+alias ls='ls --color=auto'
+alias la='ls -a'
+alias ll='ls -alFh'
+alias l='ls'
+alias l.="ls -A | egrep '^\.'"
+
+#fix obvious typo's
+alias cd..='cd ..'
+alias pdw='pwd'
+alias udpate='sudo pacman -Syyu'
+alias upate='sudo pacman -Syyu'
+alias updte='sudo pacman -Syyu'
+alias updqte='sudo pacman -Syyu'
+alias upqll='paru -Syu --noconfirm'
+alias upal='paru -Syu --noconfirm'
+
 
 #list
 alias ls="colorls --report"
