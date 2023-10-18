@@ -189,9 +189,13 @@ alias updte='sudo pacman -Syyu'
 alias updqte='sudo pacman -Syyu'
 alias upqll='paru -Syu --noconfirm'
 alias upal='paru -Syu --noconfirm'
-alias srv='sudo apt-get update && sudo apt-get upgrade'
 alias install='sudo apt-get install'
 alias cls='clear'
+
+
+# Ubuntu Server
+alias srv='sudo apt-get update && sudo apt-get upgrade && sudo apt-get dist-upgrade'
+
 
 #list
 alias ls="colorls --report"
